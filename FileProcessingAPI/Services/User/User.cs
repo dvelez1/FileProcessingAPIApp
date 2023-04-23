@@ -1,6 +1,6 @@
-﻿namespace FileProcessingAPI;
+﻿namespace FileProcessingAPI.Service.User;
 
-public static class Api
+public static class User
 {
     // Only will be exposed ConfigureApi, because the methods are private!
     public static void ConfigureApi(this WebApplication app)

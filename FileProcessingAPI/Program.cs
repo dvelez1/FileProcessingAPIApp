@@ -1,15 +1,24 @@
 using DataAccess.DbAccess;
-using FileProcessingAPI;
+using FileProcessingAPI.Service.Proccess1Api;
+using FileProcessingAPI.Service.User;
 
 var builder = WebApplication.CreateBuilder(args);
 
+System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance); // Used Convert Excel to Json Method
+
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+#region Services
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+#endregion
+
+#region Interfaces Registration
 //Add My Interfaces from DataAccess Library (Register the services)
 builder.Services.AddSingleton<ISqlDataAccess, SqlDataAccess>();
 builder.Services.AddSingleton<IUserData, UserData>();
+builder.Services.AddScoped<IEmployeeData, EmployeeData>();
+#endregion
 
 var app = builder.Build();
 
@@ -22,7 +31,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.ConfigureApi(); // Contain my endpoint mapping
-
+#region endpoint mapping
+app.ConfigureApi(); 
+app.ConfigureExcelToJsonApi();
+#endregion
 
 app.Run();
