@@ -5,7 +5,7 @@ using FileProcessingAPI.Service.User;
 var builder = WebApplication.CreateBuilder(args);
 
 System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance); // Used Convert Excel to Json Method
-Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true; // Remove Underscore (_) in the Dapper Mapping
+Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true; // Remove Underscore (_) for automatic Object Mapping
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
