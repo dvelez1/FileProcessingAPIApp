@@ -22,7 +22,7 @@ namespace DataAccess.Models
         public string Department { get; set; }
         
         [JsonProperty("business_unit", Required = Required.AllowNull)]
-        public string BusinnesUnit { get; set; }
+        public string BusinnessUnit { get; set; }
        
         [JsonProperty("gender", Required = Required.Always)]
         public string Gender { get; set; }

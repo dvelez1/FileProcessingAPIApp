@@ -14,7 +14,6 @@ public static class ExcelToJsonApi
        app.MapGet(pattern: "/FileProcessing/{excelFilePath}/{sheetName}", ReadExcelAndConvertToJssonPathAndSheetName);
        app.MapGet(pattern: "/FileProcessing/GetEmployees", GetEmployees);
        app.MapPost(pattern: "/FileProcessing/InsertExcelDataSetIntoEmployee/{excelFilePath}", InsertExcelIntoEmployee);
-
     }
 
    
