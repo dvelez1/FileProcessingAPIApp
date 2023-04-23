@@ -16,21 +16,6 @@ public static class ExcelToJsonApi
        app.MapPost(pattern: "/FileProcessing/InsertExcelDataSetIntoEmployee/{excelFilePath}", InsertExcelIntoEmployee);
     }
 
-   
-
-
-    private static async Task<IResult> ReadExcelAndConvertToJson(string excelFilePath)
-    {
-        try
-        {
-            return Results.Ok(await Helpers.ConvertExcelToJson.ExcelToJson(excelFilePath));
-        }
-        catch (Exception ex)
-        {
-            return Results.Problem(ex.Message);
-        }
-        
-    }
     private static async Task<IResult> ReadExcelAndConvertToJssonPathAndSheetName(string excelFilePath,string sheetName)
     {
         try
