@@ -32,7 +32,7 @@ public class UserData : IUserData
         _db.SaveData(storeProcedure: "dbo.spUser_Insert", new { user.FirstName, user.LastName });
 
     public Task UpdateUser(UserModel user) =>
-        _db.SaveData(storeProcedure: "db.spUser_Update", user);
+        _db.SaveData(storeProcedure: "dbo.spUser_Update", user);
 
     public Task DeleteUser(int id) =>
         _db.SaveData(storeProcedure: "dbo.spUser_Delete", new { Id = id });

@@ -1,4 +1,6 @@
-﻿namespace FileProcessingAPI.Service.User;
+﻿using FileProcessingAPI.Helpers;
+
+namespace FileProcessingAPI.Service.User;
 
 public static class User
 {
@@ -11,6 +13,7 @@ public static class User
         app.MapPost(pattern: "/Users", InsertUser);
         app.MapPut(pattern: "/Users", UpdateUser);
         app.MapDelete(pattern: "/Users", DeleteUser);
+        app.MapGet(pattern: "/Users/UsersAllToExcel", UsersAllToExcel);
     }
 
     private static async Task<IResult> GetUsers(IUserData data)
@@ -76,6 +79,29 @@ public static class User
         {
             return Results.Problem(ex.Message);
         }
+    }
+
+    private static async Task<IResult> UsersAllToExcel(IUserData data)
+    {
+        try
+        {
+            await UserToExcelMethod(data);
+            return Results.Ok("Excel download Success!");
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem(ex.Message);
+        }
+    }
+
+
+    // Only for Demo purpose. The location of this method is not correct
+    private static async Task UserToExcelMethod(IUserData data)
+    {
+        var modelList = await data.GetUsers();
+        var dataTable = ConvertListToExcel.ConvertToDataTable(modelList as List<UserModel>);
+        ConvertListToExcel.GenerateExcel(dataTable);
+
     }
 
 
