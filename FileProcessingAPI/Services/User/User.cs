@@ -1,4 +1,5 @@
 ﻿using FileProcessingAPI.Helpers;
+using Microsoft.AspNetCore.Routing.Constraints;
 
 namespace FileProcessingAPI.Service.User;
 
@@ -81,11 +82,11 @@ public static class User
         }
     }
 
-    private static async Task<IResult> UsersAllToExcel(IUserData data)
+    private static async Task<IResult> UsersAllToExcel(string filePath, string fileName, IUserData data)
     {
         try
         {
-            await UserToExcelMethod(data);
+            await UserToExcelMethod(filePath, fileName, data);
             return Results.Ok("Excel download Success!");
         }
         catch (Exception ex)
@@ -96,12 +97,14 @@ public static class User
 
 
     // Only for Demo purpose. The location of this method is not correct
-    private static async Task UserToExcelMethod(IUserData data)
+    private static async Task UserToExcelMethod(string filePath, string fileName, IUserData data)
     {
         var modelList = await data.GetUsers();
-        var dataTable = ConvertListToExcel.ConvertToDataTable(modelList as List<UserModel>);
-        ConvertListToExcel.GenerateExcel(dataTable);
-
+        Parallel.Invoke(
+            () => ConvertListToExcel.GenerateExcel(ConvertListToExcel.ConvertToDataTable(modelList as List<UserModel>), filePath, fileName)
+            );
+        //var dataTable = ConvertListToExcel.ConvertToDataTable(modelList as List<UserModel>);
+        //ConvertListToExcel.GenerateExcel(dataTable, filePath, fileName);
     }
 
 
