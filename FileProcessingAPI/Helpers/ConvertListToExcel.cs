@@ -5,7 +5,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace FileProcessingAPI.Helpers;
 
-public class ConvertListToExcel
+public static class ConvertListToExcel
 {
 
     public static DataTable ConvertToDataTable<T>(IList<T> data)
@@ -35,17 +35,16 @@ public class ConvertListToExcel
     {
         try
         {
-            DataSet dataSet = new DataSet();
-            dataSet.Tables.Add(dataTable);
-            // create a excel app along side with workbook and worksheet and give a name to it
             Excel.Application excelApp = new Excel.Application();
             Excel.Workbook excelWorkBook = excelApp.Workbooks.Add();
             Excel._Worksheet xlWorksheet = (Excel._Worksheet)excelWorkBook.Sheets[1];
+            DataSet dataSet = new DataSet();
+            dataSet.Tables.Add(dataTable);
             Excel.Range xlRange = xlWorksheet.UsedRange;
             foreach (DataTable table in dataSet.Tables)
             {
                 //Add a new worksheet to workbook with the Datatable name
-                Excel.Worksheet excelWorkSheet = (Excel.Worksheet)excelWorkBook.Sheets.Add();
+                Excel.Worksheet excelWorkSheet = (Excel.Worksheet)excelWorkBook.Sheets.Add(); 
                 excelWorkSheet.Name = table.TableName;
                 // add all the columns
                 for (int i = 1; i < table.Columns.Count + 1; i++)
@@ -67,10 +66,15 @@ public class ConvertListToExcel
             excelWorkBook.SaveAs(Path.Combine(directoryLocation, Path.GetFileName(fileName + ".xlsx")));
             excelWorkBook.Close();
             excelApp.Quit();
+
         }
         catch (Exception)
         {
             throw;
+        }
+        finally
+        {
+            GC.Collect();
         }
 
     }

@@ -101,7 +101,9 @@ public static class User
     {
         var modelList = await data.GetUsers();
         Parallel.Invoke(
-            () => ConvertListToExcel.GenerateExcel(ConvertListToExcel.ConvertToDataTable(modelList as List<UserModel>), filePath, fileName)
+            () => ConvertListToExcel.GenerateExcel(ConvertListToExcel.ConvertToDataTable(modelList as List<UserModel>), filePath, fileName),
+            () => ConvertListToExcel.GenerateExcel(ConvertListToExcel.ConvertToDataTable(modelList as List<UserModel>), filePath, fileName + "2"),
+            () => ConvertListToExcel.GenerateExcel(ConvertListToExcel.ConvertToDataTable(modelList as List<UserModel>), filePath, fileName + "3")
             );
         //var dataTable = ConvertListToExcel.ConvertToDataTable(modelList as List<UserModel>);
         //ConvertListToExcel.GenerateExcel(dataTable, filePath, fileName);
