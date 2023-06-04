@@ -86,4 +86,36 @@ public static class ConvertListToExcel
     }
 
 
+    public static void SaveToCsv(DataTable dataTable, string directoryLocation = @"C:\MyDownload", string fileName = "DownloadExcel", string csvDelimiter = ",")
+    {
+        try
+        {
+            // code block for writing headers of data table
+
+            int columnCount = dataTable.Columns.Count;
+            string columnNames = "";
+            string[] output = new string[dataTable.Rows.Count + 1];
+            for (int i = 0; i < columnCount; i++)
+            {
+                columnNames += dataTable.Columns[i].ToString() + csvDelimiter;
+            }
+            output[0] += columnNames;
+
+            // code block for writing rows of data table
+            for (int i = 1; (i - 1) < dataTable.Rows.Count; i++)
+            {
+                for (int j = 0; j < columnCount; j++)
+                {
+                    output[i] += dataTable.Rows[i - 1][j].ToString() + csvDelimiter;
+                }
+            }
+
+            System.IO.File.WriteAllLines(Path.Combine(directoryLocation, Path.GetFileName(fileName + ".csv")), output, System.Text.Encoding.UTF8);
+        }
+        catch(Exception)
+        {
+            throw;
+        }
+    }
+
 }

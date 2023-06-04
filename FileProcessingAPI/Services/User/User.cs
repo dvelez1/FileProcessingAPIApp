@@ -100,13 +100,14 @@ public static class User
     private static async Task UserToExcelMethod(string filePath, string fileName, IUserData data)
     {
         var modelList = await data.GetUsers();
-        Parallel.Invoke(
-            () => ConvertListToExcel.GenerateExcel(ConvertListToExcel.ConvertToDataTable(modelList as List<UserModel>), filePath, fileName),
-            () => ConvertListToExcel.GenerateExcel(ConvertListToExcel.ConvertToDataTable(modelList as List<UserModel>), filePath, fileName + "2"),
-            () => ConvertListToExcel.GenerateExcel(ConvertListToExcel.ConvertToDataTable(modelList as List<UserModel>), filePath, fileName + "3")
-            );
-        //var dataTable = ConvertListToExcel.ConvertToDataTable(modelList as List<UserModel>);
-        //ConvertListToExcel.GenerateExcel(dataTable, filePath, fileName);
+        //Parallel.Invoke(
+        //    () => ConvertListToExcel.GenerateExcel(ConvertListToExcel.ConvertToDataTable(modelList as List<UserModel>), filePath, fileName),
+        //    () => ConvertListToExcel.GenerateExcel(ConvertListToExcel.ConvertToDataTable(modelList as List<UserModel>), filePath, fileName + "2"),
+        //    () => ConvertListToExcel.GenerateExcel(ConvertListToExcel.ConvertToDataTable(modelList as List<UserModel>), filePath, fileName + "3")
+        //    );
+        
+        ConvertListToExcel.GenerateExcel(ConvertListToExcel.ConvertToDataTable(modelList as List<UserModel>), filePath, fileName);
+        ConvertListToExcel.SaveToCsv(ConvertListToExcel.ConvertToDataTable(modelList as List<UserModel>), filePath, fileName);
     }
 
 
