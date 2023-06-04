@@ -89,9 +89,13 @@ public class ConvertExcelToJson
     //https://www.newtonsoft.com/jsonschema/help/html/CustomJsonValidator.htm
     public static async Task<bool> ValidateJsonSchemaArray(string json, Type type)
     {
+        if (string.IsNullOrEmpty(json)) // return false if null
+            return false;
         JSchemaGenerator generator = new JSchemaGenerator();
         JSchema schema = generator.Generate(type);
         JArray jsonArray = JArray.Parse(json);
+        if (jsonArray.Count == 0) // Return False if empty array
+            return false;
         IList<string> messages;
         return jsonArray.IsValid(schema, out messages);
     }
