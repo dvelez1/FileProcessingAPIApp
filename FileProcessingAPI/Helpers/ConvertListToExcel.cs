@@ -86,7 +86,7 @@ public static class ConvertListToExcel
     }
 
 
-    public static void SaveToCsv(DataTable dataTable, string directoryLocation = @"C:\MyDownload", string fileName = "DownloadExcel", string csvDelimiter = ",")
+    public static async Task SaveToCsv(DataTable dataTable, string directoryLocation = @"C:\MyDownload", string fileName = "DownloadExcel", string csvDelimiter = ",")
     {
         try
         {
@@ -110,7 +110,7 @@ public static class ConvertListToExcel
                 }
             }
 
-            System.IO.File.WriteAllLines(Path.Combine(directoryLocation, Path.GetFileName(fileName + ".csv")), output, System.Text.Encoding.UTF8);
+            await System.IO.File.WriteAllLinesAsync(Path.Combine(directoryLocation, Path.GetFileName(fileName + ".csv")), output, System.Text.Encoding.UTF8);
         }
         catch(Exception)
         {

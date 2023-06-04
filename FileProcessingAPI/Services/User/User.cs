@@ -107,7 +107,7 @@ public static class User
         //    );
         
         ConvertListToExcel.GenerateExcel(ConvertListToExcel.ConvertToDataTable(modelList as List<UserModel>), filePath, fileName);
-        ConvertListToExcel.SaveToCsv(ConvertListToExcel.ConvertToDataTable(modelList as List<UserModel>), filePath, fileName);
+        await ConvertListToExcel.SaveToCsv(ConvertListToExcel.ConvertToDataTable(modelList as List<UserModel>), filePath, fileName);
     }
 
 
