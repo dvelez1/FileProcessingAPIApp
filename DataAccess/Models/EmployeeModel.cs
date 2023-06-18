@@ -27,8 +27,8 @@ namespace DataAccess.Models
         [JsonProperty("gender", Required = Required.Always)]
         public string Gender { get; set; }
 
-        [JsonProperty("id", Required = Required.Always)]
-        public int Id { get; set; }
+        [JsonProperty("id", Required = Required.AllowNull)]
+        public int? Id { get; set; } = null;
 
         [JsonProperty("transaction_date", Required = Required.Always)]
         public DateTime TransactionDate { get; set; }

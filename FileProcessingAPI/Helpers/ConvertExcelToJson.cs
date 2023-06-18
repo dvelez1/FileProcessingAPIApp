@@ -79,6 +79,8 @@ public class ConvertExcelToJson
                 }
             });
             var table = ds.Tables[0];
+            //json = JsonConvert.SerializeObject(table, Formatting.Indented);
+            
             json = JsonConvert.SerializeObject(table, Formatting.Indented);
         }
 
@@ -101,3 +103,5 @@ public class ConvertExcelToJson
     }
 
 }
+
+
