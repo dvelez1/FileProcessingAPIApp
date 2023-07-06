@@ -1,6 +1,7 @@
 ﻿using FileProcessingAPI.Helpers;
 using Microsoft.AspNetCore.Routing.Constraints;
 
+
 namespace FileProcessingAPI.Service.User;
 
 public static class User
@@ -47,7 +48,7 @@ public static class User
     {
         try
         {
-            await data.InsertUser(user);
+            var result = await data.InsertUserWithDynamicParameters(user);
             return Results.Ok();
         }
         catch (Exception ex)

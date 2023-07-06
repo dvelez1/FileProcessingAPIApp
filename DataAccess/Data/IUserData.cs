@@ -9,5 +9,6 @@ namespace DataAccess.Data
         Task<IEnumerable<UserModel>> GetUsers();
         Task InsertUser(UserModel user);
         Task UpdateUser(UserModel user);
+        Task<int> InsertUserWithDynamicParameters(UserModel user);
     }
 }

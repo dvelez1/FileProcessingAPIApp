@@ -40,5 +40,11 @@ public class SqlDataAccess : ISqlDataAccess
 
     }
 
-
+    public async Task<int> SaveDataByDynamicParameter<T>(string storeProcedure, DynamicParameters parameters, string connectionId = "Default")
+    {
+        using IDbConnection connection = new SqlConnection(_config.GetConnectionString(connectionId));
+        
+        await connection.ExecuteAsync(storeProcedure, parameters, commandType: CommandType.StoredProcedure);
+        return  parameters.Get<int>("@ReturnVal");
+    }
 }
