@@ -59,7 +59,8 @@ public static class DynamicDapperParametersMapper
             var pName = prop.Name;
             parameters.Add($"@{pName}", prop.GetValue(obj, null), TypeMap[prop.PropertyType], ParameterDirection.Input);
         }
-        parameters.Add("ReturnVal", dbType: DbType.Int32, direction: ParameterDirection.Output);
+        // parameters.Add("ReturnVal", dbType: DbType.Int32, direction: ParameterDirection.Output); Used with OUTPUT Parameter on SP. Example: ,@ReturnVal int OUTPUT
+        parameters.Add("ReturnVal", dbType: DbType.Int32, direction: ParameterDirection.ReturnValue);
 
         return parameters;
     }
