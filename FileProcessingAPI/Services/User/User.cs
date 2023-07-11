@@ -12,10 +12,13 @@ public static class User
         // API endpoint mapping
         app.MapGet(pattern: "/Users", GetUsers);
         app.MapGet(pattern: "/Users/{id}", GetUser);
-        app.MapPost(pattern: "/Users", InsertUser);
+        app.MapPost(pattern: "/Users", InsertUserWithReturnValue);
         app.MapPut(pattern: "/Users", UpdateUser);
         app.MapDelete(pattern: "/Users", DeleteUser);
-        app.MapGet(pattern: "/Users/UsersAllToExcel", UsersAllToExcel);
+        app.MapGet(pattern: "/Users/", UsersAllToExcel);
+
+
+        app.MapGet(pattern: "/GetUserWithReturnValue/", GetUserWithReturnValue);
     }
 
     private static async Task<IResult> GetUsers(IUserData data)
@@ -44,7 +47,31 @@ public static class User
         }
     }
 
-    private static async Task<IResult> InsertUser(UserModel user, IUserData data)
+    #region Methods with return value
+    /// <summary>
+    /// Get User with Return Value
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="data"></param>
+    /// <returns></returns>
+    private static async Task<IResult> GetUserWithReturnValue(int id, IUserData data)
+    {
+        try
+        {
+            var (list, result) = await data.GetUserWithReturValue(id);
+            if (result)
+                return Results.Ok(list);
+            else
+                return Results.NotFound();
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem(ex.Message);
+        }
+    }
+
+
+    private static async Task<IResult> InsertUserWithReturnValue(UserModel user, IUserData data)
     {
         try
         {
@@ -55,7 +82,8 @@ public static class User
         {
             return Results.Problem(ex.Message);
         }
-    }
+    } 
+    #endregion
 
     private static async Task<IResult> UpdateUser(UserModel user, IUserData data)
     {
@@ -106,7 +134,7 @@ public static class User
         //    () => ConvertListToExcel.GenerateExcel(ConvertListToExcel.ConvertToDataTable(modelList as List<UserModel>), filePath, fileName + "2"),
         //    () => ConvertListToExcel.GenerateExcel(ConvertListToExcel.ConvertToDataTable(modelList as List<UserModel>), filePath, fileName + "3")
         //    );
-        
+
         ConvertListToExcel.GenerateExcel(ConvertListToExcel.ConvertToDataTable(modelList as List<UserModel>), filePath, fileName);
         await ConvertListToExcel.SaveToCsv(ConvertListToExcel.ConvertToDataTable(modelList as List<UserModel>), filePath, fileName);
     }

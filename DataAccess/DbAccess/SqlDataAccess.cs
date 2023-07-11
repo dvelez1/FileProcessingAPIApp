@@ -40,11 +40,32 @@ public class SqlDataAccess : ISqlDataAccess
 
     }
 
-    public async Task<int> SaveDataByDynamicParameter<T>(string storeProcedure, DynamicParameters parameters, string connectionId = "Default")
+    #region Methods with return value (CRUD)
+
+    public async Task<int> SaveDataByDynamicParameter(string storeProcedure, DynamicParameters parameters, string connectionId = "Default")
     {
         using IDbConnection connection = new SqlConnection(_config.GetConnectionString(connectionId));
-        
+
         await connection.ExecuteAsync(storeProcedure, parameters, commandType: CommandType.StoredProcedure);
-        return  parameters.Get<int>("@ReturnVal");
+        return parameters.Get<int>("@ReturnVal");
     }
+
+    public async Task<Tuple<IEnumerable<T>, int>> LoadDataWithRetunValue<T>(
+        string storeProcedure,
+        DynamicParameters parameters,
+        string connectionId = "Default")
+    {
+        using IDbConnection connection = new SqlConnection(_config.GetConnectionString(connectionId));
+
+        var list = await connection.QueryAsync<T>(storeProcedure, parameters,
+            commandType: CommandType.StoredProcedure);
+
+        int transactionResult = parameters.Get<int>("@ReturnVal");
+
+        return new Tuple<IEnumerable<T>, int>(list, transactionResult);
+
+    }
+
+    #endregion
+
 }
