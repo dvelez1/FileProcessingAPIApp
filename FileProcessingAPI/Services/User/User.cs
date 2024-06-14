@@ -18,7 +18,7 @@ public static class User
         //app.MapGet(pattern: "/Users/", UsersAllToExcel);
 
 
-        //app.MapGet(pattern: "/GetUserWithReturnValue/", GetUserWithReturnValue);
+        app.MapGet(pattern: "/GetUserWithReturnValue/", GetUserWithReturnValue);
     }
 
     private static async Task<IResult> GetUsers(IUserData data)
