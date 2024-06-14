@@ -11,9 +11,9 @@ public static class ExcelToJsonApi
     public static void ConfigureExcelToJsonApi(this WebApplication app)
     {
        app.MapGet(pattern: "/FileProcessing/{excelFilePath}/ReadExcelAndConvertToJson", ReadExcelAndConvertToJson);
-       app.MapGet(pattern: "/FileProcessing/{excelFilePath}/{sheetName}/ReadExcelAndConvertToJsonSecondAlternative", ReadExcelAndConvertToJssonPathAndSheetName);
-       app.MapGet(pattern: "/FileProcessing/GetEmployees", GetEmployees);
-       app.MapPost(pattern: "/FileProcessing/InsertExcelDataSetIntoEmployee/{excelFilePath}", InsertExcelIntoEmployee);
+        app.MapGet(pattern: "/FileProcessing/{excelFilePath}/{sheetName}/ReadExcelAndConvertToJsonSecondAlternative", ReadExcelAndConvertToJssonPathAndSheetName);
+        app.MapGet(pattern: "/FileProcessing/GetEmployees", GetEmployees);
+        app.MapPost(pattern: "/FileProcessing/InsertExcelDataSetIntoEmployee/{excelFilePath}", InsertExcelIntoEmployee);
     }
 
     private static async Task<IResult> ReadExcelAndConvertToJson(string excelFilePath)

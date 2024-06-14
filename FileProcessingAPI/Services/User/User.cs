@@ -15,10 +15,10 @@ public static class User
         app.MapPost(pattern: "/Users", InsertUserWithReturnValue);
         app.MapPut(pattern: "/Users", UpdateUser);
         app.MapDelete(pattern: "/Users", DeleteUser);
-        app.MapGet(pattern: "/Users/", UsersAllToExcel);
+        //app.MapGet(pattern: "/Users/", UsersAllToExcel);
 
 
-        app.MapGet(pattern: "/GetUserWithReturnValue/", GetUserWithReturnValue);
+        //app.MapGet(pattern: "/GetUserWithReturnValue/", GetUserWithReturnValue);
     }
 
     private static async Task<IResult> GetUsers(IUserData data)
