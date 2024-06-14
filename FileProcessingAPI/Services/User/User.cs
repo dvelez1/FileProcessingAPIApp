@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Routing.Constraints;
 
 
+
 namespace FileProcessingAPI.Service.User;
 
 public static class User
@@ -137,6 +138,8 @@ public static class User
 
         ConvertListToExcel.GenerateExcel(ConvertListToExcel.ConvertToDataTable(modelList as List<UserModel>), filePath, fileName);
         await ConvertListToExcel.SaveToCsv(ConvertListToExcel.ConvertToDataTable(modelList as List<UserModel>), filePath, fileName);
+
+        ConvertListToExcelClosedXML.ExportToExcel(modelList as List<UserModel>, Path.Combine(filePath, Path.GetFileName(fileName + "2" + ".xlsx"))); //Path.Combine(filePath, Path.GetFileName(fileName + ".xlsx"))
     }
 
 
