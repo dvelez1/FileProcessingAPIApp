@@ -6,8 +6,8 @@ using ClosedXML.Excel;
 
 namespace FileProcessingAPI.Helpers;
 
-    public static class ConvertListToExcelClosedXML
-    {
+public static class ConvertListToExcelClosedXML
+{
 
     public static void ExportToExcel<T>(List<T> data, string filePath)
     {

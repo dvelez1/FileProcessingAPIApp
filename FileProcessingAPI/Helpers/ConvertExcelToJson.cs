@@ -7,6 +7,8 @@ using ExcelDataReader;
 using Newtonsoft.Json.Schema.Generation;
 using Newtonsoft.Json.Schema;
 using System.Text.Json;
+using System.Text.RegularExpressions;
+using System.Text.Json.Nodes;
 
 
 namespace FileProcessingAPI.Helpers;
@@ -80,8 +82,15 @@ public class ConvertExcelToJson
             });
             var table = ds.Tables[0];
             //json = JsonConvert.SerializeObject(table, Formatting.Indented);
-            
+
+            //var jsonSerializerSettings = new JsonSerializerSettings
+            //{
+            //    StringEscapeHandling = StringEscapeHandling.EscapeNonAscii
+            //};
+            //json = JsonConvert.SerializeObject(table, Formatting.Indented, jsonSerializerSettings);
             json = JsonConvert.SerializeObject(table, Formatting.Indented);
+            json = RemoveSpecialCharactersFromJson(json);
+
         }
 
         return json;
@@ -102,6 +111,106 @@ public class ConvertExcelToJson
         return jsonArray.IsValid(schema, out messages);
     }
 
+
+    static string RemoveSpecialCharactersFromJson(string jsonString)
+    {
+        if (CheckJsonType(jsonString) == "JSON Array")
+        {
+            // Deserialize the JSON string into a JObject
+            JArray jsonObject = JsonConvert.DeserializeObject<JArray>(jsonString);
+
+            // Recursively process the JObject to remove special characters
+            JArray cleanedJsonObject = (JArray)CleanJson(jsonObject);
+
+            // Serialize the cleaned JObject back to a JSON string
+            return JsonConvert.SerializeObject(cleanedJsonObject, Formatting.Indented);
+        }else if (CheckJsonType(jsonString) == "JSON Object")
+        {
+            // Deserialize the JSON string into a JObject
+            JObject jsonObject = JsonConvert.DeserializeObject<JObject>(jsonString);
+
+            // Recursively process the JObject to remove special characters
+            JObject cleanedJsonObject = (JObject)CleanJson(jsonObject);
+
+            // Serialize the cleaned JObject back to a JSON string
+            return JsonConvert.SerializeObject(cleanedJsonObject, Formatting.Indented);
+        }else
+            return string.Empty; // Error
+
+    }
+
+    static JToken CleanJson(JToken token)
+    {
+        if (token is JObject)
+        {
+            JObject obj = (JObject)token;
+            JObject cleanedObj = new JObject();
+            foreach (var property in obj.Properties())
+            {
+                cleanedObj.Add(property.Name, CleanJson(property.Value));
+            }
+            return cleanedObj;
+        }
+        else if (token is JArray)
+        {
+            JArray array = (JArray)token;
+            JArray cleanedArray = new JArray();
+            foreach (var item in array)
+            {
+                cleanedArray.Add(CleanJson(item));
+            }
+            return cleanedArray;
+        }
+        else if (token is JValue)
+        {
+            JValue value = (JValue)token;
+            if (value.Type == JTokenType.String)
+            {
+                string cleanedValue = RemoveSpecialCharacters(value.ToString());
+                return new JValue(cleanedValue);
+            }
+            return value;
+        }
+        return token;
+    }
+
+    static string RemoveSpecialCharacters(string input)
+    {
+        // Define a regular expression to match special characters
+        // Adjust the pattern to match the specific characters you want to remove
+        //Regex regex = new Regex("[^a-zA-Z0-9{}:,\"]+"); // Original Example
+        Regex regex = new Regex("[^a-zA-Z0-9{}:,']+");
+
+        // Replace special characters with an empty string
+        return regex.Replace(input, "");
+    }
+
+    static string CheckJsonType(string jsonString)
+    {
+        try
+        {
+            // Parse the JSON string into a JToken
+            JToken token = JToken.Parse(jsonString);
+
+            // Check the type of the JToken
+            if (token.Type == JTokenType.Object)
+            {
+                return "JSON Object";
+            }
+            else if (token.Type == JTokenType.Array)
+            {
+                return "JSON Array";
+            }
+            else
+            {
+                return "Unknown JSON type";
+            }
+        }
+        catch (JsonReaderException)
+        {
+            return "Invalid JSON string";
+        }
+    }
 }
 
 
