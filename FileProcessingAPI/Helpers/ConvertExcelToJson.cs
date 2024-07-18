@@ -124,7 +124,8 @@ public class ConvertExcelToJson
 
             // Serialize the cleaned JObject back to a JSON string
             return JsonConvert.SerializeObject(cleanedJsonObject, Formatting.Indented);
-        }else if (CheckJsonType(jsonString) == "JSON Object")
+        }
+        else if (CheckJsonType(jsonString) == "JSON Object")
         {
             // Deserialize the JSON string into a JObject
             JObject jsonObject = JsonConvert.DeserializeObject<JObject>(jsonString);
@@ -134,7 +135,8 @@ public class ConvertExcelToJson
 
             // Serialize the cleaned JObject back to a JSON string
             return JsonConvert.SerializeObject(cleanedJsonObject, Formatting.Indented);
-        }else
+        }
+        else
             return string.Empty; // Error
 
     }
@@ -179,10 +181,13 @@ public class ConvertExcelToJson
         // Define a regular expression to match special characters
         // Adjust the pattern to match the specific characters you want to remove
         //Regex regex = new Regex("[^a-zA-Z0-9{}:,\"]+"); // Original Example
-        Regex regex = new Regex("[^a-zA-Z0-9{}:,']+");
+        //Regex regex = new Regex("[^a-zA-Z0-9{}:,']+");
 
         // Replace special characters with an empty string
-        return regex.Replace(input, "");
+        //return regex.Replace(input, "");
+
+        return Regex.Replace(input, @"[^a-zA-Z0-9\s]", string.Empty);
+
     }
 
     static string CheckJsonType(string jsonString)
